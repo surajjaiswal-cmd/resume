@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import {
   Mail,
   MessageCircle,
@@ -22,7 +22,7 @@ export function Hero() {
     document.body.removeChild(link);
   };
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -33,16 +33,16 @@ export function Hero() {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
+      transition: { duration: 0.6, ease: [0.42, 0, 0.58, 1] }, // replaces "easeOut"
     },
   };
 
-  const buttonVariants = {
+  const buttonVariants: Variants = {
     hover: {
       scale: 1.05,
       transition: { duration: 0.2 },
@@ -52,7 +52,6 @@ export function Hero() {
 
   return (
     <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-4 relative overflow-hidden">
-      {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
@@ -109,51 +108,46 @@ export function Hero() {
         <motion.div
           variants={itemVariants}
           className="flex flex-wrap justify-center gap-4">
-          <motion.a
-            href="mailto:surajjaiswal0963@gmail.com"
-            variants={buttonVariants}
-            whileHover="hover"
-            whileTap="tap"
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl group">
-            <Mail className="w-5 h-5 group-hover:animate-bounce" />
-            Email Me
-          </motion.a>
-
-          <motion.a
-            href="https://wa.me/919165076563"
-            target="_blank"
-            rel="noopener noreferrer"
-            variants={buttonVariants}
-            whileHover="hover"
-            whileTap="tap"
-            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl group">
-            <MessageCircle className="w-5 h-5 group-hover:animate-bounce" />
-            WhatsApp
-          </motion.a>
-
-          <motion.a
-            href="https://www.linkedin.com/in/suraj-jaiswal-1518a5275/"
-            target="_blank"
-            rel="noopener noreferrer"
-            variants={buttonVariants}
-            whileHover="hover"
-            whileTap="tap"
-            className="flex items-center gap-2 bg-blue-700 hover:bg-blue-800 text-white px-6 py-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl group">
-            <Linkedin className="w-5 h-5 group-hover:animate-bounce" />
-            LinkedIn
-          </motion.a>
-
-          <motion.a
-            href="https://github.com/surajjaiswal-cmd"
-            target="_blank"
-            rel="noopener noreferrer"
-            variants={buttonVariants}
-            whileHover="hover"
-            whileTap="tap"
-            className="flex items-center gap-2 bg-gray-800 hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 text-white px-6 py-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl group">
-            <Github className="w-5 h-5 group-hover:animate-bounce" />
-            GitHub
-          </motion.a>
+          {[
+            {
+              label: "Email Me",
+              href: "mailto:surajjaiswal0963@gmail.com",
+              color: "bg-blue-600 hover:bg-blue-700",
+              icon: Mail,
+            },
+            {
+              label: "WhatsApp",
+              href: "https://wa.me/919165076563",
+              color: "bg-green-600 hover:bg-green-700",
+              icon: MessageCircle,
+            },
+            {
+              label: "LinkedIn",
+              href: "https://www.linkedin.com/in/suraj-jaiswal-1518a5275/",
+              color: "bg-blue-700 hover:bg-blue-800",
+              icon: Linkedin,
+            },
+            {
+              label: "GitHub",
+              href: "https://github.com/surajjaiswal-cmd",
+              color:
+                "bg-gray-800 hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600",
+              icon: Github,
+            },
+          ].map((item, idx) => (
+            <motion.a
+              key={idx}
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              variants={buttonVariants}
+              whileHover="hover"
+              whileTap="tap"
+              className={`flex items-center gap-2 ${item.color} text-white px-6 py-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl group`}>
+              <item.icon className="w-5 h-5 group-hover:animate-bounce" />
+              {item.label}
+            </motion.a>
+          ))}
 
           <motion.button
             onClick={handleDownloadResume}
